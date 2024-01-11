@@ -137,6 +137,9 @@ set(MODULE_FILES
     src/SimpleGameKit.cpp
     src/Core/Game.cpp
     src/Core/InputManager.cpp
+    src/Core/AssetManager.cpp
+    src/Core/Scene.cpp
+    src/Core/Renderer.cpp
 )
 
 

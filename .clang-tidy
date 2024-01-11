@@ -1,0 +1,14 @@
+Checks:	'* \
+ -google-readability-todo,\
+  -altera-*,\
+  -fuchsia-*,\
+  fuchsia-multiple-inheritance,\
+  -llvm-header-guard,\
+  -llvm-include-order,\
+  -modernize-use-nodiscard,\
+  -modernize-use-trailing-return-type,\
+  -readability-identifier-length,\
+  -misc-non-private-member-variables-in-classes'
+
+HeaderFilterRegex: ''
+FormatStyle:     google

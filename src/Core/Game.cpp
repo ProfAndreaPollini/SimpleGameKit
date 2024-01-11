@@ -13,6 +13,9 @@
 
 namespace sgk {
 void Game::drawGui() const {
+  if (m_currentScene) {
+    m_currentScene->drawGui();
+  }
   bool open = true;
   ImGui::ShowDemoWindow(&open);
 }
@@ -33,7 +36,7 @@ void Game::run() {
   LOG_DEBUG << "Hello log!";        // long macro
   LOG(plog::debug) << "Hello log!"; // function-style macro
   settings();
-  m_window.Init();
+  m_window.Init(m_width, m_height, "SimpleGameKit");
   setup();
 
   const double dt = 0.01;
@@ -44,14 +47,13 @@ void Game::run() {
   rlImGuiSetup(true);
 
   while (!m_window.ShouldClose() and m_isRunning) {
-    if (m_inputManager) {
-      PLOG_VERBOSE << "Input Manager OK!";
-      handleInput();
-    }
 
-    if (IsKeyPressed(KEY_F)) {
-      EnableInputManager();
-    }
+      handleInput();
+
+
+    // if (IsKeyPressed(KEY_F)) {
+    //   enableInputManager();
+    // }
 
     auto new_time = std::chrono::high_resolution_clock::now();
     const auto frame_time = std::chrono::duration_cast<std::chrono::duration<double>>(new_time - current_time).count();

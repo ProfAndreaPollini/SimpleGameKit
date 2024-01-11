@@ -10,7 +10,6 @@ TEST(SimpleGameKitTest, BasicAssertions) {
 class CustomGame final : public sgk::Game {
 public:
   void setup() override {
-
     a = 2;
   }
 
@@ -24,9 +23,6 @@ public:
 TEST(SimpleGameKitTest, CustomGameSetup) {
   CustomGame game;
   game.setup();
-        // game.run();
+  // game.run();
   ASSERT_EQ(game.a, 2);
-
 }
-
-
