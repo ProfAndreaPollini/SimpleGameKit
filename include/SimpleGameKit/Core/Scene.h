@@ -4,7 +4,7 @@ namespace sgk {
 class Scene {
 public:
   Scene() = default;
-virtual ~Scene() = default;
+  virtual ~Scene() = default;
 
   virtual void setup() {
   }
@@ -18,7 +18,7 @@ virtual ~Scene() = default;
   virtual void draw() const {
   }
 
-  virtual void drawGui() const{}
-
+  virtual void drawGui() const {
+  }
 };
-}  // namespace sgk
+} // namespace sgk

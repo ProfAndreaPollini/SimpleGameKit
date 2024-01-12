@@ -18,6 +18,9 @@ public:
           ::ClearBackground(color);
 }
 
+  static void DrawCircle(float x, float y, float radius, const Color& color)  {
+    ::DrawCircle(x, y, radius, color);
+  }
   void DrawTexture(std::string& name, Vector2& position) const;
 };
 }  // namespace sgk

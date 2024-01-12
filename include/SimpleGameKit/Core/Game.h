@@ -36,7 +36,7 @@ public:
     }
   }
 
-  virtual void update(double dt) {
+  virtual void update([[maybe_unused]]const double dt) {
     if (m_currentScene) {
       m_currentScene->update(dt);
     }
@@ -64,7 +64,7 @@ public:
     return m_renderer;
   }
 
-  void addScene(const std::string& name, Scene scene) {
+  void addScene(const std::string& name, const Scene& scene) {
     m_scenes[name] = scene;
   }
 
@@ -72,21 +72,6 @@ public:
     m_currentScene = &m_scenes[name];
   }
 
-  // /**
-  //  * \brief  Enable the Input Manager object
-  //  */
-  // void enableInputManager() {
-  //   m_inputManager = CreatePtr<InputManager>();
-  // }
-  //
-  // // template<typename T, typename... Args>
-  // // void Enable<T>(Args&&... args) {
-  // //   m_inputManager = CreatePtr<T>(std::forward<Args>(args)...);
-  // // }
-  //
-  // Ptr<InputManager>& getInputManager() {
-  //   return m_inputManager;
-  // }
 
 
 private:

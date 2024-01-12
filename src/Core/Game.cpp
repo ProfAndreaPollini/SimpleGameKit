@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <chrono>
-
+using namespace std::chrono_literals;
 #include <plog/Log.h> // Step1: include the headers
 #include <plog/Init.h>
 #include <plog/Formatters/TxtFormatter.h>
@@ -27,19 +27,20 @@ void Game::run() {
   // Step3: write log messages using a special macro
   // There are several log macros, use the macro you liked the most
 
-  PLOGD << "Hello log!";             // short macro
-  PLOG_DEBUG << "Hello log!";        // long macro
-  PLOG(plog::debug) << "Hello log!"; // function-style macro
-
-  // Also you can use LOG_XXX macro but it may clash with other logging libraries
-  LOGD << "Hello log!";             // short macro
-  LOG_DEBUG << "Hello log!";        // long macro
-  LOG(plog::debug) << "Hello log!"; // function-style macro
+  // PLOGD << "Hello log!";             // short macro
+  // PLOG_DEBUG << "Hello log!";        // long macro
+  // PLOG(plog::debug) << "Hello log!"; // function-style macro
+  //
+  // // Also you can use LOG_XXX macro but it may clash with other logging libraries
+  // LOGD << "Hello log!";             // short macro
+  // LOG_DEBUG << "Hello log!";        // long macro
+  // LOG(plog::debug) << "Hello log!"; // function-style macro
   settings();
   m_window.Init(m_width, m_height, "SimpleGameKit");
   setup();
 
-  const double dt = 0.01;
+  constexpr auto  timestep = std::chrono::duration_cast<std::chrono::duration<double>>
+  (std::chrono::nanoseconds{16ms}).count();
 
   auto current_time = std::chrono::high_resolution_clock::now();
   auto accumulator = 0.0;
@@ -61,10 +62,10 @@ void Game::run() {
 
     accumulator += frame_time;
 
-    while (accumulator >= dt) {
-      update(dt);
-      accumulator -= dt;
-      m_t += dt;
+    while (accumulator >= timestep) {
+      update(timestep);
+      accumulator -= timestep;
+      m_t += timestep;
     }
 
     // Draw

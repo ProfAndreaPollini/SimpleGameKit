@@ -126,7 +126,9 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 enable_testing()
-add_executable(tests tests/core.cpp)
+add_executable(tests
+    tests/core.cpp
+    tests/entity.cpp)
 target_link_libraries(tests GTest::gtest_main SimpleGameKit)
 include(GoogleTest)
 gtest_discover_tests(tests)
@@ -140,6 +142,8 @@ set(MODULE_FILES
     src/Core/AssetManager.cpp
     src/Core/Scene.cpp
     src/Core/Renderer.cpp
+    src/Core/Entity.cpp
+    src/Core/EntityManager.cpp
 )
 
 

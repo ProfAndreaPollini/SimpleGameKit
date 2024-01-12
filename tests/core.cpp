@@ -1,3 +1,4 @@
+#include <SimpleGameKit/Core/Entity.h>
 #include <gtest/gtest.h>
 
 #include "SimpleGameKit/SimpleGameKit.h"
@@ -20,9 +21,10 @@ public:
   int a = 1;
 };
 
-TEST(SimpleGameKitTest, CustomGameSetup) {
-  CustomGame game;
-  game.setup();
+TEST(SimpleGameKitTest, EntityTests) {
+  auto e = sgk::Entity::create();
+  auto e2 = sgk::Entity::create();
   // game.run();
-  ASSERT_EQ(game.a, 2);
+  ASSERT_EQ(e->getId(), 1);
+  ASSERT_EQ(e2->getId(), 2);
 }
