@@ -12,6 +12,10 @@ using namespace std::chrono_literals;
 #include <plog/Appenders/ColorConsoleAppender.h>
 
 namespace sgk {
+Ptr<EntityManager>& Game::getEntityManager()   {
+  return m_entityManager;
+}
+
 void Game::drawGui() const {
   if (m_currentScene) {
     m_currentScene->drawGui();
@@ -36,7 +40,7 @@ void Game::run() {
   // LOG_DEBUG << "Hello log!";        // long macro
   // LOG(plog::debug) << "Hello log!"; // function-style macro
   settings();
-  m_window.Init(m_width, m_height, "SimpleGameKit");
+  // m_window.Init(m_width, m_height, "SimpleGameKit");
   setup();
 
   constexpr auto  timestep = std::chrono::duration_cast<std::chrono::duration<double>>

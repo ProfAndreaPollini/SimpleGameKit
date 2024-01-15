@@ -8,18 +8,7 @@ TEST(SimpleGameKitTest, BasicAssertions) {
   ASSERT_TRUE(true);
 }
 
-class CustomGame final : public sgk::Game {
-public:
-  void setup() override {
-    a = 2;
-  }
 
-  void settings() override {
-    getWindow().SetTitle("pippo");
-  }
-
-  int a = 1;
-};
 
 TEST(SimpleGameKitTest, EntityTests) {
   auto e = sgk::Entity::create();

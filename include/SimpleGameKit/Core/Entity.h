@@ -35,6 +35,7 @@ class Entity {
   }
 
 public:
+
   Entity()
     : m_id(nextId()) {
   }
