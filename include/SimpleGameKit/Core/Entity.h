@@ -62,7 +62,7 @@ public:
    *
    */
   template <typename T, typename... Args>
-  std::expected<T, entity_error> add(Args&&... args) {
+  [[maybe_unused]] std::expected<T, entity_error> add(Args&&... args) {
     m_components[std::type_index(typeid(T))] = sgk::CreatePtr<T>(std::forward<Args>(args)...);
     if (const auto it = m_components.find(std::type_index(typeid(T))); it != m_components.end()) {
       T* component = dynamic_cast<T*>(it->second.get());

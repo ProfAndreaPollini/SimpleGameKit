@@ -1,9 +1,12 @@
 #pragma once
 
+#include <deque>
 #include <memory>
 
 #include "EntityManager.h"
 #include "InputManager.h"
+#include "Event.h"
+#include "EventManager.h"
 #include "Scene.h"
 #include "Utils.h"
 #include "../Render/Renderer.h"
@@ -32,7 +35,8 @@ struct GameSettings {
  */
 class Game final  {
   Game()
-   : m_entityManager(CreatePtr<EntityManager>()), m_width(1600),m_height(900) {
+   : m_entityManager(CreatePtr<EntityManager>()), m_width(1600),m_height(900),
+  m_eventManager(CreatePtr<EventManager>()){
 
   }
 
@@ -63,7 +67,7 @@ public:
     m_window = raylib::Window();
     m_window.Init(m_width, m_height, settings.title);
     m_renderer = CreatePtr<Renderer>();
-    m_window.SetTargetFPS(60);
+    m_window.SetTargetFPS(settings.fps);
   }
 
    void setup() {
@@ -90,7 +94,7 @@ public:
     }
   }
 
-  virtual void drawGui() const;
+  void drawGui() const;
 
   void run();
 
@@ -123,6 +127,8 @@ private:
   int m_width;
   int m_height;
   Ptr<Renderer> m_renderer;
+  Ptr<EventManager> m_eventManager;
+
 
 
   // Ptr<InputManager> m_inputManager;

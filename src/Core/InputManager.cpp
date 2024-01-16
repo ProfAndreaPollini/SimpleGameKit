@@ -1,19 +1,20 @@
 #include "SimpleGameKit/Core/InputManager.h"
 
-#include "raylib.h"
+#include "raylib-cpp.hpp"
 
 void sgk::InputManager::ProcessInput() {
   for (const auto& mapping : m_mappings) {
-    if (auto [key, action] = mapping; IsKeyPressed(key) and (
+
+    if (auto [key, action] = mapping; IsKeyDown(key) and (
                                         action.action == ActionType::START or action.action == ActionType::ANY)) {
       QueueAction(action.event, ActionType::START);
-      PollInputEvents();
+      // PollInputEvents();
     } else if (IsKeyReleased(key) and (action.action == ActionType::END or action.action == ActionType::ANY)) {
       QueueAction(action.event, ActionType::END);
-      PollInputEvents();
+      // raylib::Pro
     }
   }
-  PollInputEvents();
+  // PollInputEvents();
   for (auto& [action, type] : events) {
     // if exists a callback for this action
     if (callbacks.contains(action) and not callbacks[action].empty()) {
@@ -29,7 +30,7 @@ void sgk::InputManager::QueueAction(const std::string& action, ActionType type) 
   events.insert(std::make_tuple(action, type));
 }
 
-std::set<sgk::Event>& sgk::InputManager::GetActions() {
+std::set<sgk::InputEvent>& sgk::InputManager::GetActions() {
   return events;
 }
 

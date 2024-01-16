@@ -128,7 +128,9 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 add_executable(tests
     tests/core.cpp
-    tests/entity.cpp)
+    tests/entity.cpp
+    tests/events.cpp
+    tests/resources.cpp)
 target_link_libraries(tests GTest::gtest_main SimpleGameKit)
 include(GoogleTest)
 gtest_discover_tests(tests)
@@ -144,6 +146,9 @@ set(MODULE_FILES
     src/Core/Renderer.cpp
     src/Core/Entity.cpp
     src/Core/EntityManager.cpp
+    src/Core/Event.cpp
+    src/Core/EventManager.cpp
+    src/Core/ResourceManager.cpp
 )
 
 

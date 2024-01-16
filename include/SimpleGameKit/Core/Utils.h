@@ -33,4 +33,5 @@ constexpr Ptr<T> CreatePtr() {
 
 using Window = raylib::Window;
 
+
 }  // namespace sgk

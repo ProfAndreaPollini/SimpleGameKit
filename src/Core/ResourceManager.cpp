@@ -1,0 +1,1 @@
+#include "SimpleGameKit/Core/ResourceManager.h"

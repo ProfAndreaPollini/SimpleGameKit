@@ -31,12 +31,12 @@ inline const char* to_string(ActionType e) {
   }
 }
 
-using Event = std::tuple<std::string, ActionType>;
-using EventCallback = std::function<void(const Event&)>;
+using InputEvent = std::tuple<std::string, ActionType>;
+using EventCallback = std::function<void(const InputEvent&)>;
 
 class InputManager {
   KeyMapping m_mappings = {};
-  std::set<Event> events = {};
+  std::set<InputEvent> events = {};
   std::unordered_map<std::string, std::list<EventCallback>> callbacks = {};
 
 public:
@@ -52,7 +52,7 @@ public:
 
   void ProcessInput();
   void QueueAction(const std::string& action, ActionType type);
-  std::set<Event>& GetActions();
+  std::set<InputEvent>& GetActions();
   size_t GetActionCount() const;
 };
 }

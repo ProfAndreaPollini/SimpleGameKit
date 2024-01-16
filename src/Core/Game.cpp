@@ -12,7 +12,7 @@ using namespace std::chrono_literals;
 #include <plog/Appenders/ColorConsoleAppender.h>
 
 namespace sgk {
-Ptr<EntityManager>& Game::getEntityManager()   {
+Ptr<EntityManager>& Game::getEntityManager() {
   return m_entityManager;
 }
 
@@ -21,7 +21,7 @@ void Game::drawGui() const {
     m_currentScene->drawGui();
   }
   bool open = true;
-  ImGui::ShowDemoWindow(&open);
+  ImGui::Text("prova");
 }
 
 void Game::run() {
@@ -43,8 +43,8 @@ void Game::run() {
   // m_window.Init(m_width, m_height, "SimpleGameKit");
   setup();
 
-  constexpr auto  timestep = std::chrono::duration_cast<std::chrono::duration<double>>
-  (std::chrono::nanoseconds{16ms}).count();
+  constexpr auto timestep = std::chrono::duration_cast<std::chrono::duration<double>>
+      (std::chrono::nanoseconds{16ms}).count();
 
   auto current_time = std::chrono::high_resolution_clock::now();
   auto accumulator = 0.0;
@@ -52,9 +52,7 @@ void Game::run() {
   rlImGuiSetup(true);
 
   while (!m_window.ShouldClose() and m_isRunning) {
-
-      handleInput();
-
+    handleInput();
 
     // if (IsKeyPressed(KEY_F)) {
     //   enableInputManager();
@@ -76,8 +74,8 @@ void Game::run() {
     //----------------------------------------------------------------------------------
     BeginDrawing();
     draw();
-    rlImGuiBegin();
 
+    rlImGuiBegin();
     drawGui();
     rlImGuiEnd();
     EndDrawing();
