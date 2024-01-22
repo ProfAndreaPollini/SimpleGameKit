@@ -1,27 +1,23 @@
+#include <SimpleGameKit/Core/InputManager.h>
 #include <gtest/gtest.h>
 
 #include "SimpleGameKit/Core/EventManager.h"
 #include "SimpleGameKit/Core/Event.h"
 
 TEST(SimpleGameKitTest, EventManagerTests) {
-  sgk::EventManager em;
-  em.add<sgk::KeyEvent>(sgk::KeyEvent::Keycode::A, sgk::KeyEvent::EventType::Pressed);
-  ASSERT_EQ(em.size(), 1);
 
-  ASSERT_TRUE(em.has<sgk::KeyEvent>());
-  for (auto i = 0; i < 10; ++i) {
-    em.add<sgk::KeyEvent>(sgk::KeyEvent::Keycode::A, sgk::KeyEvent::EventType::Pressed);
-  }
-  em.add<sgk::KeyEvent>(sgk::KeyEvent::Keycode::A, sgk::KeyEvent::EventType::Pressed);
-  auto events = em.get<sgk::KeyEvent>();
-  auto n_events = std::ranges::distance(events);
-  ASSERT_EQ(n_events, 12);
+  sgk::InputManager inputManager;
 
-  for (const auto* event : events) {
-    ASSERT_EQ(event->key_code, sgk::KeyEvent::Keycode::A);
-    ASSERT_EQ(event->type, sgk::KeyEvent::EventType::Pressed);
-  }
+  ASSERT_EQ(inputManager.size(), 0);
+  inputManager.add<sgk::KeyEvent>(65, sgk::KeyEvent::EventType::Pressed);
+  ASSERT_EQ(inputManager.size(), 1);
 
-  em.clear();
-  ASSERT_EQ(em.size(), 0);
+  ASSERT_EQ(inputManager.isKey<sgk::KeyEvent::EventType::Pressed>(65), true);
+  ASSERT_EQ(inputManager.isKey<sgk::KeyEvent::EventType::Pressed>(66), false);
+  ASSERT_EQ(inputManager.count<sgk::KeyEvent>(), 1);
+
+  const auto events = inputManager.get<sgk::KeyEvent>();
+  ASSERT_EQ(events.size(), 1);
+  inputManager.clear();
+  ASSERT_EQ(inputManager.size(), 0);
 }

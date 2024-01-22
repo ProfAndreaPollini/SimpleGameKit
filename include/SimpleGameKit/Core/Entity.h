@@ -3,6 +3,7 @@
 #include <expected>
 #include <map>
 #include <typeindex>
+#include <vector>
 
 #include "Utils.h"
 
@@ -15,6 +16,7 @@ class Component {
 public:
   virtual ~Component() = default;
 };
+
 
 
 class Entity {
@@ -69,9 +71,9 @@ public:
       if (component) {
         return *component;
       }
-    } else {
-      return std::unexpected(entity_error::component_not_found);
     }
+      return std::unexpected(entity_error::component_not_found);
+
   }
 
   // check if components has a specific set of components
@@ -98,4 +100,11 @@ public:
     return entity;
   }
 };
+
+
+struct EntityRelationship final : Component  {
+  std::vector<std::shared_ptr<Entity>> children;
+  std::shared_ptr<Entity> parent;
+};
+
 }

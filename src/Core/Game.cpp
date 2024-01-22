@@ -2,11 +2,12 @@
 #include <rlImGui.h>
 
 #include "SimpleGameKit/Core/Game.h"
+#include "SimpleGameKit/Core/Time.h"
 
-#include <iostream>
+
 #include <chrono>
 using namespace std::chrono_literals;
-#include <plog/Log.h> // Step1: include the headers
+
 #include <plog/Init.h>
 #include <plog/Formatters/TxtFormatter.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
@@ -16,10 +17,22 @@ Ptr<EntityManager>& Game::getEntityManager() {
   return m_entityManager;
 }
 
+Ptr<EventManager>& Game::getEventManager() {
+  return m_eventManager;
+}
+
+Ptr<InputManager>& Game::getInputManager() {
+  return m_inputManager;
+}
+
+Ptr<ResourceManager>& Game::getResourceManager() {
+  return m_resourceManager;
+}
+
 void Game::drawGui() const {
-  if (m_currentScene) {
-    m_currentScene->drawGui();
-  }
+  // if (m_currentScene) {
+  //   m_currentScene->drawGui();
+  // }
   bool open = true;
   ImGui::Text("prova");
 }
@@ -27,6 +40,8 @@ void Game::drawGui() const {
 void Game::run() {
   static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
   plog::init(plog::verbose, &consoleAppender);
+  m_resourceManager->add<Time>();
+  const auto time = m_resourceManager->get<Time>().value();
 
   // Step3: write log messages using a special macro
   // There are several log macros, use the macro you liked the most
@@ -43,40 +58,65 @@ void Game::run() {
   // m_window.Init(m_width, m_height, "SimpleGameKit");
   setup();
 
-  constexpr auto timestep = std::chrono::duration_cast<std::chrono::duration<double>>
-      (std::chrono::nanoseconds{16ms}).count();
+  m_currentScene->setup();
 
-  auto current_time = std::chrono::high_resolution_clock::now();
-  auto accumulator = 0.0;
+  for (const auto& system : m_systems[std::to_underlying(GameLoopPhase::STARTUP)]) {
+    system->operator()();
+  }
+
+  // constexpr auto timestep = std::chrono::duration_cast<std::chrono::duration<double>>
+  //     (std::chrono::nanoseconds{16ms}).count();
+  //
+  // auto current_time = std::chrono::high_resolution_clock::now();
+  // auto accumulator = 0.0;
+  time->start();
 
   rlImGuiSetup(true);
 
   while (!m_window.ShouldClose() and m_isRunning) {
+    std::cout << std::format("input events = {}", m_inputManager->get<sgk::KeyEvent>().size()) << std::endl;
+    for (const auto& system : m_systems[std::to_underlying(GameLoopPhase::PRE_UPDATE)]) {
+      std::cout << std::format("system: {}", typeid(*system).name()) << std::endl;
+      system->operator()();
+    }
     handleInput();
 
-    // if (IsKeyPressed(KEY_F)) {
-    //   enableInputManager();
-    // }
 
-    auto new_time = std::chrono::high_resolution_clock::now();
-    const auto frame_time = std::chrono::duration_cast<std::chrono::duration<double>>(new_time - current_time).count();
-    current_time = new_time;
 
-    accumulator += frame_time;
+    // auto new_time = std::chrono::high_resolution_clock::now();
+    // const auto frame_time = std::chrono::duration_cast<std::chrono::duration<double>>(new_time - current_time).count();
+    // current_time = new_time;
+    //
+    // accumulator += frame_time;
+    time->update();
 
-    while (accumulator >= timestep) {
-      update(timestep);
-      accumulator -= timestep;
-      m_t += timestep;
+    while (time->getAccumulator() >= Time::timestep) {
+      // update(Time::timestep);
+      for (const auto& system : m_systems[std::to_underlying(GameLoopPhase::UPDATE)]) {
+        system->operator()();
+      }
+      //accumulator -= timestep;
+      time->accumulator() -= Time::timestep;
+      //m_t += timestep;
+      time->t() += Time::timestep;
     }
+    // std::cout << std::format("frame time = {}\n", time->getFrameTime());
+    // std::cout << std::format("t = {}\n", time->t());
+
 
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
     draw();
+    for (const auto& system : m_systems[std::to_underlying(GameLoopPhase::POST_UPDATE)]) {
+      system->operator()();
+    }
 
     rlImGuiBegin();
     drawGui();
+    for (const auto& system : m_systems[std::to_underlying(GameLoopPhase::IMGUI)]) {
+      system->operator()();
+    }
     rlImGuiEnd();
     EndDrawing();
   }

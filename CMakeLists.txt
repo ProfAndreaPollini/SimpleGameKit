@@ -130,7 +130,9 @@ add_executable(tests
     tests/core.cpp
     tests/entity.cpp
     tests/events.cpp
-    tests/resources.cpp)
+    tests/resources.cpp
+    tests/systems.cpp
+    )
 target_link_libraries(tests GTest::gtest_main SimpleGameKit)
 include(GoogleTest)
 gtest_discover_tests(tests)
@@ -140,7 +142,6 @@ gtest_discover_tests(tests)
 set(MODULE_FILES
     src/SimpleGameKit.cpp
     src/Core/Game.cpp
-    src/Core/InputManager.cpp
     src/Core/AssetManager.cpp
     src/Core/Scene.cpp
     src/Core/Renderer.cpp
@@ -149,6 +150,9 @@ set(MODULE_FILES
     src/Core/Event.cpp
     src/Core/EventManager.cpp
     src/Core/ResourceManager.cpp
+    src/Core/System.cpp
+    src/Core/InputManager.cpp
+    src/Core/Time.cpp
 )
 
 

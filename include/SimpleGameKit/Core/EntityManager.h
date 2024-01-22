@@ -2,8 +2,10 @@
 #include <vector>
 
 #include "Entity.h"
+#include "Event.h"
 
 namespace sgk {
+
 class EntityManager {
   std::vector<Ref<Entity>> m_entities{};
 
@@ -27,6 +29,17 @@ public:
       }
     }
     return entities;
+  }
+
+  //get entities with a specific set of compoenent types
+  template <typename... Ts>
+  std::expected<Ref<Entity>,entity_error> getOne() const {
+        for (auto& entity : m_entities) {
+          if (entity->has<Ts...>()) {
+                return entity;
+          }
+        }
+        return std::unexpected(entity_error::component_not_found);
   }
 };
 }

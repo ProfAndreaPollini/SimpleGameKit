@@ -19,8 +19,7 @@
 
 
 namespace sgk {
-template <typename BASE, typename T>
-concept EnsureInheritsFrom = std::is_base_of_v<BASE, T>;
+
 
 
 struct Resource {
